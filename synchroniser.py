@@ -86,7 +86,6 @@ def synchronize():
             user_info = sp.current_user()
             user_id = user_info['id']
 
-
             # Crée la playlist
             playlist = sp.user_playlist_create(user_id, deezer_playlist_name)
 
