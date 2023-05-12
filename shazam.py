@@ -18,7 +18,7 @@ def create_deezer_playlist(playlist_name):
 
 playlist_name = "Shazam"
 
-def main(title, artist, album):
+def main(title, artist):
     deezer_playlist_id = '' # 3026993382
 
     max = 200
@@ -43,7 +43,7 @@ def main(title, artist, album):
         # La playlist n'existe pas
         deezer_playlist_id = create_deezer_playlist(playlist_name)
 
-    query = 'album:"{}" track:"{}" artist:"{}"'.format(album, title, artist)
+    query = 'track:"{}" artist:"{}"'.format(title, artist)
     url = 'https://api.deezer.com/search'
     params = {
         'q': query,
@@ -77,6 +77,5 @@ def main(title, artist, album):
     return None
 
 if __name__ == "__main__":
-    # title, artist, album
-    print(sys.argv[1], sys.argv[2], sys.argv[3])
-    main(sys.argv[1], sys.argv[2], sys.argv[3])
+    # title, artist
+    main(sys.argv[1], sys.argv[2])
