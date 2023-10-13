@@ -72,7 +72,7 @@ def main(title, artist):
 
         # Envoi de la requête POST
 
-        url = 'https://api.deezer.com/playlist/{}/tracks'.format(deezer_playlist_id)
+        url = f'https://api.deezer.com/playlist/{deezer_playlist_id}/tracks'
         params = {'access_token': keys.deezer_access_token, 'songs': {track_id, }}
         response = requests.post(url, params=params)
 
