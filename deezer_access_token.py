@@ -2,6 +2,7 @@ import requests
 import webbrowser
 import keys
 
+
 def revoke(access_token):
     revoke_url = "https://connect.deezer.com/oauth/revoke.php?access_token={}".format(access_token)
 
@@ -12,10 +13,13 @@ def revoke(access_token):
     else:
         print("Error revoking token: {}".format(response.status_code))
 
+
 # URL d'autorisation Deezer
-auth_uri = 'https://connect.deezer.com/oauth/auth.php?app_id={}&redirect_uri={}&perms={}'.format(keys.deezer_client_id, keys.deezer_redirect_uri, keys.deezer_permissions)
+auth_uri = 'https://connect.deezer.com/oauth/auth.php?app_id={}&redirect_uri={}&perms={}'.format(keys.deezer_client_id,
+                                                                                                 keys.deezer_redirect_uri,
+                                                                                                 keys.deezer_permissions)
 print(auth_uri)
-#Get code in url link returned
+# Get code in url link returned
 webbrowser.open_new(auth_uri)
 
 # Rediriger l'utilisateur vers l'URL d'autorisation Deezer et attendre son consentement

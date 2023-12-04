@@ -7,7 +7,8 @@ import spotipy.util as util
 from spotipy.oauth2 import SpotifyOAuth
 import keys
 
-# spotify_access_token = util.prompt_for_user_token(spotify_username, spotify_scope, client_id=spotify_client_id, client_secret=spotify_client_secret, redirect_uri=spotify_redirect_uri)
+# spotify_access_token = util.prompt_for_user_token(spotify_username, spotify_scope, client_id=spotify_client_id,
+# client_secret=spotify_client_secret, redirect_uri=spotify_redirect_uri)
 sp_oauth = SpotifyOAuth(client_id=keys.spotify_client_id, client_secret=keys.spotify_client_secret, redirect_uri=keys.spotify_redirect_uri, scope=keys.spotify_scope)
 
 # Obtenez l'URL d'autorisation
