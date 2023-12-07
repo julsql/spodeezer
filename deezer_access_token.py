@@ -26,6 +26,7 @@ def create_access_token(deezer_code):
         f.write(access_token)
     return access_token
 
+
 def revoke(access_token):
     revoke_url = "https://connect.deezer.com/oauth/revoke.php?access_token={}".format(access_token)
 

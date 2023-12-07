@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, redirect
 import keys
 import shazam
 import synchroniser
-from deezer_access_token import create_access_token, get_access_token
+from deezer_access_token import create_access_token
 
 app = Flask(__name__)
 
@@ -50,6 +50,7 @@ def code_receive():
     deezer_code = request.args.get('code')
     deezer_access_token = create_access_token(deezer_code)
     return deezer_access_token
+
 
 @app.route('/deezer/code')
 def code_ask():

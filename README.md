@@ -15,15 +15,15 @@ It's a Flask project to manage Deezer and Spotify accounts.
 
 ## Commands
 
-- http://127.0.0.1:8000/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
+- http://spodeezer.h.minet.net/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
     Add to the Deezer playlist the song On Brûlera of Pomme. 
     Can be used with Shazam.
     Be careful you need to add in the header of the GET request the access-token (Access-Token) 
     and the user id (User-Id) of the playlist owner.
-- http://127.0.0.1:8000/synchronisation: Still building,
+- http://spodeezer.h.minet.net/synchronisation: Still building,
     synchronize all your Deezer and Spotify playlists
     and their music.
-- http://127.0.0.1:8000/deezer/code: get the deezer token access
+- http://spodeezer.h.minet.net/deezer/code: get the deezer token access
 
 ## Installation
 
@@ -39,7 +39,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
    - User id: Connect to Deezer, go to your profil page and get the user id in the url `https://www.deezer.com/en/profile/<user_id>`
    - App token:
    Go to [Deezer Developers](https://developers.deezer.com/myapps) and create a new applicaiton 
-   (Application domain http://localhost:8000, Redirect URL after authentication http://localhost:8000/deezer/auth)
+   (Application domain http://spodeezer.h.minet.net, Redirect URL after authentication http://spodeezer.h.minet.net/deezer/auth)
    Get your Application ID and Secret Key.
    
    Create a `keys.py` file in the root of this project and write:
@@ -48,12 +48,17 @@ It's a Flask project to manage Deezer and Spotify accounts.
     deezer_client_id = 'application_id'
     deezer_client_secret = 'secret_key'
     deezer_user_id = 'your_user_id'
-    deezer_redirect_port = '8000'
-    deezer_redirect_uri = f'http://localhost:{deezer_redirect_port}/deezer/auth'
+    deezer_redirect_uri = 'http://spodeezer.h.minet.net/deezer/auth'
     deezer_permissions = "manage_library"
     ```
 
-3. Configure the python virtual environment
+3. Create a .cache file
+    
+   ```bash
+    mkdir .cache
+    ```
+
+4. Configure the python virtual environment
 
     ```bash
     pip install virtualenv
@@ -62,13 +67,13 @@ It's a Flask project to manage Deezer and Spotify accounts.
     source env/bin/activate
     ```
    
-4. Install the libraries
+5. Install the libraries
 
     ```bash
     pip install -r requirements.txt
    ```
 
-5. Launch the website
+6. Launch the website
 
     ```bash
     python3 spodeezer.py
@@ -91,8 +96,18 @@ sudo apt-get install git
 sudo apt-get install python3-venv
 ```
 
-After installing the project as explained in [Installation](#installation)
-you can configure the VM as follows:
+Install the project as explained in [Installation](#installation)
+
+Give the access permissions of the apache server to the .cache file
+
+```bash
+sudo chmod -R 775 .cache/
+sudo chown -R www-data:www-data .cache/
+```
+
+Update the link to the python virtual env in the `spodeezer.wsgi` file.
+
+Configure the VM as follows:
 
 ```bash
 sudo nano /etc/apache2/sites-available/myconfig.conf
@@ -114,8 +129,6 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
      CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
-
-Update the link to the python virtual env in the `spodeezer.wsgi` file.
 
 You load the configuration and restart the apache server
 ```bash
