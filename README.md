@@ -15,15 +15,26 @@ It's a Flask project to manage Deezer and Spotify accounts.
 
 ## Commands
 
-- http://spodeezer.h.minet.net/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
+- http://spodeezer.h.minet.net/deezer/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
     Add to the Deezer playlist the song On Brûlera of Pomme. 
     Can be used with Shazam.
     Be careful you need to add in the header of the GET request the access-token (Access-Token) 
     and the user id (User-Id) of the playlist owner.
+- http://spodeezer.h.minet.net/spotify/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
+    Same but for Spotify
+- http://spodeezer.h.minet.net/synchronisation/playlist?playlist=Coucou:
+    Synchronize a playlist between Deezer and Spotify
+    and their tracks.
+    Be careful you need to add in the header of the GET request:
+  - the Deezer access-token (Deezer-Access-Token)
+  - the Spotify access-token (Spotify-Access-Token)
+  - the Deezer user id (Deezer-User-Id)
+  - the Spotify user id (Spotify-User-Id)
+
 - http://spodeezer.h.minet.net/synchronisation: Still building,
-    synchronize all your Deezer and Spotify playlists
-    and their music.
+    Same as command before, but for all the playlists of the accounts
 - http://spodeezer.h.minet.net/deezer/code: get the deezer token access
+- http://spodeezer.h.minet.net/spotify/code: get the spotify token access
 
 ## Installation
 
@@ -35,7 +46,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
     git clone git@github.com:juliette39/spodeezer.git
     ```
 
-2. Get some data:
+2. Get Deezer data:
    - User id: Connect to Deezer, go to your profil page and get the user id in the url `https://www.deezer.com/en/profile/<user_id>`
    - App token:
    Go to [Deezer Developers](https://developers.deezer.com/myapps) and create a new applicaiton 
@@ -52,13 +63,30 @@ It's a Flask project to manage Deezer and Spotify accounts.
     deezer_permissions = "manage_library"
     ```
 
-3. Create a .cache file
+3. Get Spotify data:
+   - User id: Connect to Spotify, go to update profil page https://www.spotify.com/fr/account/profile/ and get the user id in the first input
+   - App token:
+   Go to [Spotify for developers](https://developer.spotify.com/dashboard) and create a new applicaiton 
+   (Application domain http://spodeezer.h.minet.net, Redirect URL after authentication http://spodeezer.h.minet.net/spotify/auth)
+   Get your Client ID and Client secret.
+   
+   Add in the `keys.py` file:
+
+    ```py
+    spotify_client_id = 'client_id'
+    spotify_client_secret = 'client_secret'
+    spotify_user_id = 'your_user_id'
+    spotify_redirect_uri = 'http://spodeezer.h.minet.net/spotify/auth'
+    spotify_scope = "playlist-modify-public"
+    ```
+
+4. Create a .cache folder
     
    ```bash
     mkdir .cache
     ```
 
-4. Configure the python virtual environment
+5. Configure the python virtual environment
 
     ```bash
     pip install virtualenv
@@ -67,13 +95,13 @@ It's a Flask project to manage Deezer and Spotify accounts.
     source env/bin/activate
     ```
    
-5. Install the libraries
+6. Install the libraries
 
     ```bash
     pip install -r requirements.txt
    ```
 
-6. Launch the website
+7. Launch the website
 
     ```bash
     python3 spodeezer.py
