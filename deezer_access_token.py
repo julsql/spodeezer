@@ -3,7 +3,7 @@ import keys
 import os
 
 path = os.path.dirname(os.path.abspath(__file__))
-cache_file = os.path.join(path, ".cache-deezer-token")
+cache_file = os.path.join(path, ".cache/.cache-deezer-token")
 
 
 def create_access_token(deezer_code):
@@ -24,7 +24,7 @@ def create_access_token(deezer_code):
     access_token = response.content.decode().split("access_token=")[1].split("&")[0]
     with open(cache_file, 'w') as f:
         f.write(access_token)
-
+    return access_token
 
 def revoke(access_token):
     revoke_url = "https://connect.deezer.com/oauth/revoke.php?access_token={}".format(access_token)

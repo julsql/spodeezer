@@ -1,6 +1,4 @@
-import webbrowser
-
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 
 import keys
 import shazam
@@ -50,8 +48,7 @@ def api_synchroniser():
 @app.route('/deezer/auth')
 def code_receive():
     deezer_code = request.args.get('code')
-    create_access_token(deezer_code)
-    deezer_access_token = get_access_token()
+    deezer_access_token = create_access_token(deezer_code)
     return deezer_access_token
 
 @app.route('/deezer/code')
@@ -60,8 +57,7 @@ def code_ask():
         keys.deezer_client_id,
         keys.deezer_redirect_uri,
         keys.deezer_permissions)
-    webbrowser.open_new(auth_uri)
-    return "Fenêtre d'authentification ouverte"
+    return redirect(auth_uri)
 
 
 if __name__ == '__main__':

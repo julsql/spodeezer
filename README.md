@@ -102,7 +102,7 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 <VirtualHost *:80>
      ServerName spodeezer.h.minet.net
      WSGIScriptAlias / /home/juliettedebono/spodeezer/spodeezer.wsgi application-group=%{GLOBAL}
-    WSGIDaemonProcess app user=www-data group=www-data threads=2 python-home=/home/juliettedebono/spodeezer/env python-path=/home/juliettedebono/spodeezer
+     WSGIDaemonProcess app user=www-data group=www-data threads=2 python-home=/home/juliettedebono/spodeezer/env python-path=/home/juliettedebono/spodeezer
 
      <Directory /home/juliettedebono/spodeezer/>
             Options FollowSymLinks
@@ -114,6 +114,8 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
      CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
+
+Update the link to the python virtual env in the `spodeezer.wsgi` file.
 
 You load the configuration and restart the apache server
 ```bash
