@@ -32,7 +32,7 @@ def find_playlist_deezer(playlist_name, access_token, user_id):
                 if playlist['title'] == playlist_name:
                     # print(f"Playlist {playlist_name} trouvée sur Deezer !")
                     deezer_playlist_id = playlist['id']
-                    i = max
+                    i = max_playlist
                     break
             i += 25
         else:

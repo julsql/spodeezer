@@ -71,7 +71,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
 5. Launch the website
 
     ```bash
-    python3 server.py
+    python3 spodeezer.py
     ```
 
 ## Deploy
@@ -100,23 +100,18 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 
 ```
 <VirtualHost *:80>
-    ServerName votresite.com
-    ServerAdmin juliette.debono@telecom-sudparis.eu
+     ServerName spodeezer.h.minet.net
+     WSGIScriptAlias / /home/juliettedebono/spodeezer/spodeezer.wsgi application-group=%{GLOBAL}
+    WSGIDaemonProcess app user=www-data group=www-data threads=2 python-home=/home/juliettedebono/spodeezer/env python-path=/home/juliettedebono/spodeezer
 
-    AddDefaultCharset UTF-8
-
-    WSGIDaemonProcess spodeezer user=www-data group=www-data threads=5
-    WSGIScriptAlias / /home/juliettedebono/spodeezer/wsgi.wsgi
-
-    <Directory /spodeezer>
-        WSGIProcessGroup server
-        WSGIApplicationGroup %{GLOBAL}
-        Order deny,allow
-        Allow from all
-    </Directory>
-
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
+     <Directory /home/juliettedebono/spodeezer/>
+            Options FollowSymLinks
+            AllowOverride None
+            Require all granted
+     </Directory>
+     ErrorLog ${APACHE_LOG_DIR}/error.log
+     LogLevel warn
+     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
 
