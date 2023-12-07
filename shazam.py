@@ -14,17 +14,15 @@ def create_deezer_playlist(playlist_name, access_token, user_id):
     # print("Playlist Deezer {} créée !".format(playlist_name))
 
     playlist_id = response.json()['id']
-    # print(playlist_id)
     return playlist_id
 
 
 def find_playlist_deezer(playlist_name, access_token, user_id):
     deezer_playlist_id = ''  # 11359987904
-
-    max = 200
+    max_playlist = 200
 
     i = 0
-    while i < max:
+    while i < max_playlist:
         deezer_playlists_response = requests.get(f'https://api.deezer.com/user/{user_id}/playlists',
                                                  params={'access_token': access_token, 'index': i})
         if 'data' in deezer_playlists_response.json():
@@ -95,4 +93,10 @@ def main(title, artist, playlist, access_token, user_id):
 
 if __name__ == "__main__":
     import keys
-    main(sys.argv[1], sys.argv[2], "Shazam", keys.deezer_access_token, keys.deezer_user_id)
+    from deezer_access_token import get_access_token
+
+    deezer_access_token = get_access_token()
+    if deezer_access_token is not None:
+        main(sys.argv[1], sys.argv[2], "Shazam", deezer_access_token, keys.deezer_user_id)
+    else:
+        print("token is missing")

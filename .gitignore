@@ -1,10 +1,11 @@
 # Byte-compiled / optimized / DLL files
-*keys.py
+*keys*
 __pycache__/
 *.py[cod]
 *$py.class
 *.idea
 .cache*
+client_id.yml
 # C extensions
 *.so
 

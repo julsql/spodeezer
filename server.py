@@ -1,6 +1,11 @@
+import webbrowser
+
 from flask import Flask, request, jsonify
+
+import keys
 import shazam
 import synchroniser
+from deezer_access_token import create_access_token, get_access_token
 
 app = Flask(__name__)
 
@@ -42,5 +47,22 @@ def api_synchroniser():
     return jsonify(data)
 
 
+@app.route('/deezer/auth')
+def code_receive():
+    deezer_code = request.args.get('code')
+    create_access_token(deezer_code)
+    deezer_access_token = get_access_token()
+    return deezer_access_token
+
+@app.route('/deezer/code')
+def code_ask():
+    auth_uri = 'https://connect.deezer.com/oauth/auth.php?app_id={}&redirect_uri={}&perms={}'.format(
+        keys.deezer_client_id,
+        keys.deezer_redirect_uri,
+        keys.deezer_permissions)
+    webbrowser.open_new(auth_uri)
+    return "Fenêtre d'authentification ouverte"
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
