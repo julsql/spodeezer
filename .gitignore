@@ -6,6 +6,7 @@ __pycache__/
 *.idea
 .cache*
 client_id.yml
+.DS_Store
 # C extensions
 *.so
 
