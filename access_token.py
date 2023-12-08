@@ -23,7 +23,7 @@ def spotify_create_access_token(spotify_code):
     if not token_info or sp_oauth.is_token_expired(token_info):
         token_info = sp_oauth.get_access_token(spotify_code)
 
-    spotify_refresh_token = token_info['refresh_token']
+    spotify_refresh_token = token_info['access_token']
 
     return spotify_refresh_token
 

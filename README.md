@@ -4,7 +4,7 @@ This is the repo of my spodeezer api!
 
 It's a Flask project to manage Deezer and Spotify accounts.
 
-> Website available at address: [spodeezer.h.minet.net](http://spodeezer.h.minet.net)
+> API available at address: [spodeezer.h.minet.net](http://spodeezer.h.minet.net)
 
 ## Table of Contents
 

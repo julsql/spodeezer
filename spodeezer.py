@@ -1,3 +1,4 @@
+import spotipy
 from flask import Flask, request, jsonify, redirect
 
 import keys
@@ -5,6 +6,8 @@ import deezer_shazam
 import spotify_shazam
 import synchroniser
 from access_token import deezer_create_access_token, spotify_create_access_token, sp_oauth
+from deezer_global import deezer_find_playlist
+from spotify_global import spotify_find_playlist
 
 app = Flask(__name__)
 
@@ -91,8 +94,7 @@ def api_synchronisation():
         data = {'message': "Il manque l'id de l'utilisateur Spotify"}
         return jsonify(data)
 
-    #response = synchroniser.synchronize(deezer_access_token, spotify_access_token, deezer_user_id, spotify_user_id)
-    response = "Commande pas encore opérationnelle"
+    response = synchroniser.synchronize(deezer_access_token, spotify_access_token, deezer_user_id, spotify_user_id)
     data = {'message': response}
     return jsonify(data)
 
@@ -120,6 +122,42 @@ def api_synchronisation_playlist():
 
     response = synchroniser.synchronise_playlist(playlist, deezer_access_token,
                                                  spotify_access_token, deezer_user_id, spotify_user_id)
+    data = {'message': response}
+    return jsonify(data)
+
+
+@app.route('/deezer/playlist_id', methods=['GET'])
+def api_deezer_playlist_id():
+    deezer_access_token = request.headers.get('Deezer-Access-Token')
+    if deezer_access_token is None:
+        data = {'message': "Il manque un access token Deezer"}
+        return jsonify(data)
+    deezer_user_id = request.headers.get('Deezer-User-Id')
+    if deezer_user_id is None:
+        data = {'message': "Il manque l'id de l'utilisateur Deezer"}
+        return jsonify(data)
+
+    playlist = request.args.get('playlist')
+
+    response = deezer_find_playlist(playlist, deezer_access_token, deezer_user_id)
+    data = {'message': response}
+    return jsonify(data)
+
+
+@app.route('/spotify/playlist_id', methods=['GET'])
+def api_spotify_playlist_id():
+    spotify_access_token = request.headers.get('Spotify-Access-Token')
+    if spotify_access_token is None:
+        data = {'message': "Il manque un access token Spotify"}
+        return jsonify(data)
+    spotify_user_id = request.headers.get('Spotify-User-Id')
+    if spotify_user_id is None:
+        data = {'message': "Il manque l'id de l'utilisateur Spotify"}
+        return jsonify(data)
+
+    playlist = request.args.get('playlist')
+    sp = spotipy.Spotify(auth=spotify_access_token)
+    response = spotify_find_playlist(playlist, sp, spotify_user_id)
     data = {'message': response}
     return jsonify(data)
 
