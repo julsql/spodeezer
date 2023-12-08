@@ -1,7 +1,7 @@
 import spotipy
 from flask import Flask, request, jsonify, redirect
 
-import keys as keys
+from main import keys
 from main.files import synchroniser
 from main.files.deezer import deezer_shazam
 from main.files.spotify import spotify_shazam
