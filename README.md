@@ -53,7 +53,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
    (Application domain http://spodeezer.h.minet.net, Redirect URL after authentication http://spodeezer.h.minet.net/deezer/auth)
    Get your Application ID and Secret Key.
    
-   Create a `keys.py` file in the root of this project and write:
+   Create a `keys.py` file in [spodeezer/main](spodeezer/main) of this project and write:
 
     ```py
     deezer_client_id = 'application_id'
@@ -83,14 +83,13 @@ It's a Flask project to manage Deezer and Spotify accounts.
 4. Create a .cache folder
     
    ```bash
-    mkdir .cache
+    mkdir spodeezer/main/files/.cache
     ```
 
-5. Configure the python virtual environment
+5. Configure the python virtual environment in the root of the project
 
     ```bash
     pip install virtualenv
-    cd spodeezer
     python3 -m venv env
     source env/bin/activate
     ```
@@ -101,7 +100,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
     pip install -r requirements.txt
    ```
 
-7. Launch the website
+7. Run the server
 
     ```bash
     python3 spodeezer/main/spodeezer.py
@@ -129,11 +128,11 @@ Install the project as explained in [Installation](#installation)
 Give the access permissions of the apache server to the .cache file
 
 ```bash
-sudo chmod -R 775 .cache/
-sudo chown -R www-data:www-data .cache/
+sudo chmod -R 775 spodeezer/main/files/.cache
+sudo chown -R www-data:www-data spodeezer/main/files/.cache
 ```
 
-Update the link to the python virtual env in the `spodeezer.wsgi` file.
+Update the link to the python virtual env in the ` spodeezer/spodeezer/spodeezer.wsgi` file.
 
 Configure the VM as follows:
 
@@ -144,10 +143,12 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 ```
 <VirtualHost *:80>
      ServerName spodeezer.h.minet.net
-     WSGIScriptAlias / /home/juliettedebono/spodeezer/spodeezer/spodeezer/spodeezer.wsgi application-group=%{GLOBAL}
-     WSGIDaemonProcess app user=www-data group=www-data threads=2 python-home=/home/juliettedebono/spodeezer/env python-path=/home/juliettedebono/spodeezer
+     ServerAdmin juliette.debono@telecom-sudparis.eu
 
-     <Directory /home/juliettedebono/spodeezer/spodeezer/main>
+     WSGIScriptAlias / /home/juliettedebono/spodeezer/spodeezer/spodeezer/spode>
+     WSGIDaemonProcess app user=www-data group=www-data threads=2 python-home=/>
+
+     <Directory /home/juliettedebono/spodeezer>
             Options FollowSymLinks
             AllowOverride None
             Require all granted

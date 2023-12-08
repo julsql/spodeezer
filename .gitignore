@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 *.idea
 .cache/
+*start_server.py
 spodeezer/client_id.yml
 *.DS_Store*
 # C extensions
