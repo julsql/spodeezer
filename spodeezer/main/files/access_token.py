@@ -61,11 +61,12 @@ def revoke(access_token):
         print("Error revoking token: {}".format(response.status_code))
 
 
-def deezer_get_access_token():
+def deezer_get_access_token(user_id):
     if os.path.isfile(deezer_cache_file):
         with open(deezer_cache_file, 'r') as f:
-            deezer_access_token = f.readline()
-        return deezer_access_token
+            data = json.load(f)
+        if user_id in data:
+            return data[user_id]
 
 
 def spotify_get_access_token():

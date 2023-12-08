@@ -6,7 +6,7 @@ from main.files import synchroniser
 from main.files.deezer import deezer_shazam
 from main.files.spotify import spotify_shazam
 from main.files.access_token import deezer_create_access_token, spotify_create_access_token, sp_oauth, \
-    spotify_get_access_token
+    spotify_get_access_token, deezer_get_access_token
 from main.files.deezer.deezer_global import deezer_find_playlist
 from main.files.spotify.spotify_global import spotify_find_playlist
 
@@ -20,15 +20,10 @@ def home():
 
 @app.route('/deezer/shazam', methods=['GET'])
 def api_deezer_shazam():
-    token = request.headers.get('Access-Token')
-    if token is None:
-        data = {'message': "Il manque un access token Deezer"}
-        return jsonify(data)
-    user_id = request.headers.get('User-Id')
-    if user_id is None:
+    deezer_user_id = request.args.get('user_id')
+    if deezer_user_id is None:
         data = {'message': "Il manque l'id de l'utilisateur"}
         return jsonify(data)
-
     title = request.args.get('title')
     if title is None:
         data = {'message': "Il manque le titre"}
@@ -42,15 +37,20 @@ def api_deezer_shazam():
         data = {'message': "Il manque le nom de la playlist"}
         return jsonify(data)
 
-    response = deezer_shazam.main(title, artist, playlist, token, user_id)
+    deezer_access_token = deezer_get_access_token(deezer_user_id)
+    if deezer_access_token is None:
+        data = {'message': "Mauvais token deezer, pensez à le générer"}
+        return jsonify(data)
+
+    response = deezer_shazam.main(title, artist, playlist, deezer_access_token, deezer_user_id)
     data = {'message': response}
     return jsonify(data)
 
 
 @app.route('/spotify/shazam', methods=['GET'])
 def api_spotify_shazam():
-    user_id = request.headers.get('User-Id')
-    if user_id is None:
+    spotify_user_id = request.args.get('user_id')
+    if spotify_user_id is None:
         data = {'message': "Il manque l'id de l'utilisateur"}
         return jsonify(data)
     title = request.args.get('title')
@@ -66,24 +66,26 @@ def api_spotify_shazam():
         data = {'message': "Il manque le nom de la playlist"}
         return jsonify(data)
 
-    response = spotify_shazam.main(title, artist, playlist, user_id)
+    response = spotify_shazam.main(title, artist, playlist, spotify_user_id)
     data = {'message': response}
     return jsonify(data)
 
 
 @app.route('/synchronisation', methods=['GET'])
 def api_synchronisation():
-    deezer_access_token = request.headers.get('Deezer-Access-Token')
-    if deezer_access_token is None:
-        data = {'message': "Il manque un access token Deezer"}
-        return jsonify(data)
-    deezer_user_id = request.headers.get('Deezer-User-Id')
+    deezer_user_id = request.args.get('deezer_user_id')
     if deezer_user_id is None:
         data = {'message': "Il manque l'id de l'utilisateur Deezer"}
         return jsonify(data)
-    spotify_user_id = request.headers.get('Spotify-User-Id')
+
+    spotify_user_id = request.args.get('spotify_user_id')
     if spotify_user_id is None:
         data = {'message': "Il manque l'id de l'utilisateur Spotify"}
+        return jsonify(data)
+
+    deezer_access_token = deezer_get_access_token(deezer_user_id)
+    if deezer_access_token is None:
+        data = {'message': "Mauvais token deezer, pensez à le générer"}
         return jsonify(data)
 
     response = synchroniser.synchronize(deezer_access_token, deezer_user_id, spotify_user_id)
@@ -93,17 +95,19 @@ def api_synchronisation():
 
 @app.route('/synchronisation/playlist', methods=['GET'])
 def api_synchronisation_playlist():
-    deezer_access_token = request.headers.get('Deezer-Access-Token')
-    if deezer_access_token is None:
-        data = {'message': "Il manque un access token Deezer"}
-        return jsonify(data)
-    deezer_user_id = request.headers.get('Deezer-User-Id')
+    deezer_user_id = request.args.get('deezer_user_id')
     if deezer_user_id is None:
         data = {'message': "Il manque l'id de l'utilisateur Deezer"}
         return jsonify(data)
-    spotify_user_id = request.headers.get('Spotify-User-Id')
+
+    spotify_user_id = request.args.get('spotify_user_id')
     if spotify_user_id is None:
         data = {'message': "Il manque l'id de l'utilisateur Spotify"}
+        return jsonify(data)
+
+    deezer_access_token = deezer_get_access_token(deezer_user_id)
+    if deezer_access_token is None:
+        data = {'message': "Mauvais token deezer, pensez à le générer"}
         return jsonify(data)
 
     playlist = request.args.get('playlist')
@@ -116,16 +120,16 @@ def api_synchronisation_playlist():
 
 @app.route('/deezer/playlist_id', methods=['GET'])
 def api_deezer_playlist_id():
-    deezer_access_token = request.headers.get('Deezer-Access-Token')
-    if deezer_access_token is None:
-        data = {'message': "Il manque un access token Deezer"}
-        return jsonify(data)
-    deezer_user_id = request.headers.get('Deezer-User-Id')
+    deezer_user_id = request.args.get('deezer_user_id')
     if deezer_user_id is None:
         data = {'message': "Il manque l'id de l'utilisateur Deezer"}
         return jsonify(data)
 
     playlist = request.args.get('playlist')
+    deezer_access_token = deezer_get_access_token(deezer_user_id)
+    if deezer_access_token is None:
+        data = {'message': "Mauvais token deezer, pensez à le générer"}
+        return jsonify(data)
 
     response = deezer_find_playlist(playlist, deezer_access_token, deezer_user_id)
     data = {'message': response}
@@ -134,7 +138,7 @@ def api_deezer_playlist_id():
 
 @app.route('/spotify/playlist_id', methods=['GET'])
 def api_spotify_playlist_id():
-    spotify_user_id = request.headers.get('Spotify-User-Id')
+    spotify_user_id = request.args.get('user_id')
     if spotify_user_id is None:
         data = {'message': "Il manque l'id de l'utilisateur Spotify"}
         return jsonify(data)
