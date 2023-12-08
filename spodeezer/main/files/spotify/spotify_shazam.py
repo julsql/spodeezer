@@ -24,8 +24,8 @@ def main(title, artist, playlist, sp_access_token, user_id):
 if __name__ == "__main__":
     if len(sys.argv) < 4:
         print('title, artist, playlist needed')
-    import keys
-    from access_token import spotify_get_access_token
+    from spodeezer.spodeezer import keys
+    from spodeezer.spodeezer import spotify_get_access_token
 
     spotify_access_token = spotify_get_access_token()
     if spotify_access_token is not None:

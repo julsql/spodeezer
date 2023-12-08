@@ -1,6 +1,5 @@
 import spotipy
-from spotify_global import *
-from deezer_global import *
+from spodeezer.main.files.deezer.deezer_global import *
 
 
 def synchronise_playlist(playlist_name, deezer_access_token, spotify_access_token, deezer_user_id, spotify_user_id):
@@ -76,8 +75,8 @@ def permissions(deezer_access_token):
 
 
 if __name__ == "__main__":
-    import keys
-    from access_token import spotify_get_access_token, deezer_get_access_token
+    from spodeezer.spodeezer import keys
+    from spodeezer.spodeezer import spotify_get_access_token, deezer_get_access_token
 
     synchronise_playlist("Bonjour",
                          deezer_get_access_token(),

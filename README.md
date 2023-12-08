@@ -70,7 +70,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
    (Application domain http://spodeezer.h.minet.net, Redirect URL after authentication http://spodeezer.h.minet.net/spotify/auth)
    Get your Client ID and Client secret.
    
-   Add in the `keys.py` file:
+   Add to the `keys.py` file:
 
     ```py
     spotify_client_id = 'client_id'
@@ -144,10 +144,10 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 ```
 <VirtualHost *:80>
      ServerName spodeezer.h.minet.net
-     WSGIScriptAlias / /home/juliettedebono/spodeezer/spodeezer.wsgi application-group=%{GLOBAL}
+     WSGIScriptAlias / /home/juliettedebono/spodeezer/spodeezer/spodeezer/spodeezer.wsgi application-group=%{GLOBAL}
      WSGIDaemonProcess app user=www-data group=www-data threads=2 python-home=/home/juliettedebono/spodeezer/env python-path=/home/juliettedebono/spodeezer
 
-     <Directory /home/juliettedebono/spodeezer/>
+     <Directory /home/juliettedebono/spodeezer/spodeezer/main>
             Options FollowSymLinks
             AllowOverride None
             Require all granted

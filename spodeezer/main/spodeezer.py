@@ -1,13 +1,13 @@
 import spotipy
 from flask import Flask, request, jsonify, redirect
 
-import keys
-import deezer_shazam
-import spotify_shazam
-import synchroniser
-from access_token import deezer_create_access_token, spotify_create_access_token, sp_oauth
-from deezer_global import deezer_find_playlist
-from spotify_global import spotify_find_playlist
+from spodeezer import keys
+from spodeezer.main.files import synchroniser
+from spodeezer.main.files.deezer import deezer_shazam
+from spodeezer.main.files.spotify import spotify_shazam
+from spodeezer.main.files.access_token import deezer_create_access_token, spotify_create_access_token, sp_oauth
+from spodeezer.main.files.deezer.deezer_global import deezer_find_playlist
+from spodeezer.main.files.spotify.spotify_global import spotify_find_playlist
 
 app = Flask(__name__)
 

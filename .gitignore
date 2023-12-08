@@ -1,11 +1,11 @@
 # Byte-compiled / optimized / DLL files
-*keys*
+spodeezer/keys.py
 __pycache__/
 *.py[cod]
 *$py.class
 *.idea
 .cache/
-client_id.yml
+spodeezer/client_id.yml
 .DS_Store
 # C extensions
 *.so
