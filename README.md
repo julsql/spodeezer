@@ -21,13 +21,12 @@ It's a Flask project to manage Deezer and Spotify accounts.
     Be careful you need to add in the header of the GET request the access-token (Access-Token) 
     and the user id (User-Id) of the playlist owner.
 - http://spodeezer.h.minet.net/spotify/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
-    Same but for Spotify
+    Same but for Spotify (No need for the Access-Token, you just have to generate it one time)
 - http://spodeezer.h.minet.net/synchronisation/playlist?playlist=Coucou:
-    Synchronize a playlist between Deezer and Spotify
-    and their tracks.
+    Synchronize a playlist between Deezer and Spotify and their tracks.
+    Generate an Spotify access token first.
     Be careful you need to add in the header of the GET request:
   - the Deezer access-token (Deezer-Access-Token)
-  - the Spotify access-token (Spotify-Access-Token)
   - the Deezer user id (Deezer-User-Id)
   - the Spotify user id (Spotify-User-Id)
 

@@ -1,4 +1,5 @@
 import json
+import time
 
 import requests
 from spotipy import SpotifyOAuth
@@ -14,7 +15,7 @@ sp_oauth = SpotifyOAuth(
         client_secret=keys.spotify_client_secret,
         redirect_uri=keys.spotify_redirect_uri,
         scope=keys.spotify_scope,
-        cache_path="../../../.cache/.cache-spotify-token")
+        cache_path=spotify_cache_file)
 
 
 def spotify_create_access_token(spotify_code):
@@ -68,12 +69,18 @@ def deezer_get_access_token():
 
 
 def spotify_get_access_token():
-    if os.path.isfile(spotify_cache_file):
-        with open(spotify_cache_file, 'r') as f:
-            data = json.load(f)
-        refresh_token = data.get('refresh_token')
+    token_info = sp_oauth.get_cached_token()
+    if not token_info:
+        return None
 
-        token_info = sp_oauth.refresh_access_token(refresh_token)
-        spotify_access_token = token_info['access_token']
+    if sp_oauth.is_token_expired(token_info):
+        with open(os.path.join(path, ".cache/.token_expired"), "a") as f:
+            f.write(f"{time.time()} Token expired")
+        print("Token expired")
+        if os.path.isfile(spotify_cache_file):
+            with open(spotify_cache_file, 'r') as f:
+                data = json.load(f)
 
-        return spotify_access_token
+            refresh_token = data.get('refresh_token')
+            token_info = sp_oauth.refresh_access_token(refresh_token)
+    return token_info['access_token']

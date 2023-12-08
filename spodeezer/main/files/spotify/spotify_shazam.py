@@ -1,8 +1,13 @@
 import spotipy
-import sys
+from main.files.spotify.spotify_global import spotify_find_playlist, spotify_create_playlist, spotify_get_music_id, spotify_add_music_to_playlist
+from main.files.access_token import spotify_get_access_token
 
 
-def main(title, artist, playlist, sp_access_token, user_id):
+def main(title, artist, playlist, user_id):
+    sp_access_token = spotify_get_access_token()
+    if sp_access_token is None:
+        return "Please generate an access token"
+
     sp = spotipy.Spotify(auth=sp_access_token)
     playlist_id = spotify_find_playlist(playlist, sp, user_id)
     if playlist_id is None:
@@ -18,16 +23,3 @@ def main(title, artist, playlist, sp_access_token, user_id):
         return str(e)
     else:
         return f'{title} de {artist} ajouté avec succès à la playlist Spotify {playlist} !'
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print('title, artist, playlist needed')
-    from spodeezer.spodeezer import keys
-    from spodeezer.spodeezer import spotify_get_access_token
-
-    spotify_access_token = spotify_get_access_token()
-    if spotify_access_token is not None:
-        main(sys.argv[1], sys.argv[2], sys.argv[3], spotify_access_token, keys.spotify_user_id)
-    else:
-        print("token is missing")

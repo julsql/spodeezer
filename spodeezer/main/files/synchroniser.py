@@ -1,8 +1,17 @@
+import requests
 import spotipy
-from .deezer.deezer_global import *
+from main.files.deezer.deezer_global import deezer_find_playlist, deezer_create_playlist, deezer_get_tracks_playlist, \
+    deezer_get_music_id, deezer_add_music_to_playlist
+from main.files.spotify.spotify_global import spotify_find_playlist, spotify_create_playlist, \
+    spotify_get_tracks_id_playlist, spotify_get_music_id, spotify_add_musics_to_playlist, spotify_get_tracks_playlist
+from main.files.access_token import spotify_get_access_token
 
 
-def synchronise_playlist(playlist_name, deezer_access_token, spotify_access_token, deezer_user_id, spotify_user_id):
+def synchronise_playlist(playlist_name, deezer_access_token, deezer_user_id, spotify_user_id):
+    spotify_access_token = spotify_get_access_token()
+    if spotify_access_token is None:
+        return "Please generate an access token"
+
     deezer_playlist_id = deezer_find_playlist(playlist_name, deezer_access_token, deezer_user_id)
     if deezer_playlist_id is None:
         deezer_playlist_id = deezer_create_playlist(playlist_name, deezer_access_token, deezer_user_id)
@@ -17,22 +26,26 @@ def synchronise_playlist(playlist_name, deezer_access_token, spotify_access_toke
     spotify_track_ids = []
     for deezer_track in deezer_playlist_tracks:
         spotify_track_id = spotify_get_music_id(deezer_track['title'], deezer_track['artist'], sp)
-        if spotify_track_id not in spotify_tracks_id_already:
+        if spotify_track_id and spotify_track_id not in spotify_tracks_id_already:
             spotify_track_ids.append(spotify_track_id)
     spotify_add_musics_to_playlist(spotify_playlist_id, spotify_track_ids, sp)
 
     spotify_playlist_tracks = spotify_get_tracks_playlist(spotify_playlist_id, sp)
-    # deezer_track_ids = []
+    lent = 0
     for spotify_track in spotify_playlist_tracks:
         deezer_track_id = deezer_get_music_id(spotify_track['title'], spotify_track['artist'])
         if deezer_track_id:
-            # deezer_track_ids.append(deezer_track_id)
+            lent += 1
             deezer_add_music_to_playlist(deezer_playlist_id, deezer_track_id, deezer_access_token)
 
     return f'Playlist {playlist_name} correctement synchronisée entre Deezer et Spotify'
 
 
-def synchronize(deezer_access_token, spotify_access_token, deezer_user_id, spotify_user_id):
+def synchronize(deezer_access_token, deezer_user_id, spotify_user_id):
+    spotify_access_token = spotify_get_access_token()
+    if spotify_access_token is None:
+        return "Please generate an access token"
+
     sp = spotipy.Spotify(auth=spotify_access_token)
     all_playlists = []
     max_playlist = 200
@@ -60,6 +73,7 @@ def synchronize(deezer_access_token, spotify_access_token, deezer_user_id, spoti
 
     return f'Playlists correctement synchronisées entre Deezer et Spotify'
 
+
 def permissions(deezer_access_token):
     # Définition de l'URL de l'API de Deezer pour obtenir les informations de l'utilisateur
     url = "https://api.deezer.com/user/me?access_token={}".format(deezer_access_token)
@@ -72,14 +86,3 @@ def permissions(deezer_access_token):
         print("Permissions: {}".format(perms))
     else:
         print("Error retrieving user data: {}".format(response.status_code))
-
-
-if __name__ == "__main__":
-    from spodeezer.spodeezer import keys
-    from spodeezer.spodeezer import spotify_get_access_token, deezer_get_access_token
-
-    synchronise_playlist("Bonjour",
-                         deezer_get_access_token(),
-                         spotify_get_access_token(),
-                         keys.deezer_user_id,
-                         keys.spotify_user_id)

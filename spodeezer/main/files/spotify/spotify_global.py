@@ -1,5 +1,8 @@
 import re
 
+spotify_step = 50
+spotify_max = 300
+
 
 def spotify_create_playlist(playlist_name, sp, user_id):
     playlist = sp.user_playlist_create(user_id, playlist_name)
@@ -11,19 +14,17 @@ def spotify_create_playlist(playlist_name, sp, user_id):
 
 def spotify_find_playlist(playlist_name, sp, user_id):
     spotify_playlist_id = None
-    max_playlist = 200
-    step = 50
 
     i = 0
-    while i < max_playlist:
-        spotify_playlists_response = sp.user_playlists(user_id, limit=step, offset=i)
+    while i < spotify_max:
+        spotify_playlists_response = sp.user_playlists(user_id, limit=spotify_step, offset=i)
         spotify_playlists = spotify_playlists_response['items']
         for playlist in spotify_playlists:
             if playlist['name'] == playlist_name:
                 spotify_playlist_id = playlist['id']
-                i = max_playlist
+                i = spotify_max
                 break
-        i += step
+        i += spotify_step
     return spotify_playlist_id
 
 
@@ -63,11 +64,15 @@ def spotify_get_tracks_id_playlist(playlist_id, sp):
 
 def spotify_get_tracks_playlist(playlist_id, sp):
     spotify_playlist_tracks = []
-    tracks_response = sp.playlist_items(playlist_id, additional_types=('track',))
-    tracks = tracks_response['items']
-    for track in tracks:
-        spotify_playlist_tracks.append(
-            {'id': track['track']['id'], 'title': track['track']['name'],
-             'album': track['track']['album']['name'],
-             'artist': track['track']['album']['artists'][0]['name']})
+
+    i = 0
+    while i < spotify_max:
+        tracks_response = sp.playlist_items(playlist_id, additional_types=('track',), limit=spotify_step, offset=i)
+        tracks = tracks_response['items']
+        for track in tracks:
+            spotify_playlist_tracks.append(
+                {'id': track['track']['id'], 'title': track['track']['name'],
+                 'album': track['track']['album']['name'],
+                 'artist': track['track']['album']['artists'][0]['name']})
+        i += spotify_step
     return spotify_playlist_tracks

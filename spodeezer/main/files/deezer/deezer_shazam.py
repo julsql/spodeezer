@@ -1,5 +1,4 @@
-import sys
-from .deezer_global import *
+from main.files.deezer.deezer_global import deezer_find_playlist, deezer_create_playlist, deezer_get_music_id, deezer_add_music_to_playlist
 
 
 def main(title, artist, playlist, access_token, user_id):
@@ -16,16 +15,3 @@ def main(title, artist, playlist, access_token, user_id):
         return f'{title} de {artist} ajouté avec succès à la playlist Deezer {playlist} !'
     else:
         return result
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print('title, artist, playlist needed')
-    from spodeezer.spodeezer import keys
-    from spodeezer.spodeezer import deezer_get_access_token
-
-    deezer_access_token = deezer_get_access_token()
-    if deezer_access_token is not None:
-        main(sys.argv[1], sys.argv[2], sys.argv[3], deezer_access_token, keys.deezer_user_id)
-    else:
-        print("token is missing")
