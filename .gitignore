@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-spodeezer/keys.py
+spodeezer/main/keys.py
 __pycache__/
 *.py[cod]
 *$py.class

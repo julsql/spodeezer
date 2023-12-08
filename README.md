@@ -104,7 +104,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
 7. Launch the website
 
     ```bash
-    python3 spodeezer/main/main.py
+    python3 spodeezer/main/spodeezer.py
     ```
 
 ## Deploy

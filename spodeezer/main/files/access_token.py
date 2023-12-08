@@ -2,7 +2,7 @@ import json
 
 import requests
 from spotipy import SpotifyOAuth
-from spodeezer import keys
+import keys
 import os
 
 path = os.path.dirname(os.path.abspath(__file__))

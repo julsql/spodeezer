@@ -52,8 +52,6 @@ def deezer_get_music_id(title, artist):
         track = data['data'][0]
 
         return track['id']
-    else:
-        print(query)
 
 
 def deezer_add_music_to_playlist(playlist_id, track_id, access_token):
@@ -61,7 +59,6 @@ def deezer_add_music_to_playlist(playlist_id, track_id, access_token):
         url = f'https://api.deezer.com/playlist/{playlist_id}/tracks'
         params = {'access_token': access_token, 'songs': {track_id, }}
         response = requests.post(url, params=params)
-        print(response.text)
         if response.status_code == 200:
             if response.json() is True:
                 return True

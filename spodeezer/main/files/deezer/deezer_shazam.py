@@ -1,5 +1,5 @@
 import sys
-from spodeezer.main.files.deezer.deezer_global import *
+from .deezer_global import *
 
 
 def main(title, artist, playlist, access_token, user_id):

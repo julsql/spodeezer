@@ -1,5 +1,5 @@
 import spotipy
-from spodeezer.main.files.deezer.deezer_global import *
+from .deezer.deezer_global import *
 
 
 def synchronise_playlist(playlist_name, deezer_access_token, spotify_access_token, deezer_user_id, spotify_user_id):

@@ -1,5 +1,4 @@
 import spotipy
-from spodeezer.main.files.spotify.spotify_global import *
 import sys
 
 
