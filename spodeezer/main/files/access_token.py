@@ -2,12 +2,12 @@ import json
 
 import requests
 from spotipy import SpotifyOAuth
-from spodeezer.spodeezer import keys
+from spodeezer import keys
 import os
 
 path = os.path.dirname(os.path.abspath(__file__))
-deezer_cache_file = os.path.join(path, "../.cache/.cache-deezer-token")
-spotify_cache_file = os.path.join(path, "../.cache/.cache-spotify-token")
+deezer_cache_file = os.path.join(path, ".cache/.cache-deezer-token")
+spotify_cache_file = os.path.join(path, ".cache/.cache-spotify-token")
 
 sp_oauth = SpotifyOAuth(
         client_id=keys.spotify_client_id,
