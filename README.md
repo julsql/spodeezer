@@ -42,7 +42,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
 1. Clone git repository
 
     ```bash
-    git clone git@github.com:juliette39/spodeezer.git
+    git clone git@github.com:julsql/spodeezer.git
     ```
 
 2. Get Deezer data:
@@ -142,12 +142,12 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 ```
 <VirtualHost *:80>
      ServerName spodeezer.h.minet.net
-     ServerAdmin juliette.debono@telecom-sudparis.eu
+     ServerAdmin admin@email.fr
 
-     WSGIScriptAlias / /home/juliettedebono/spodeezer/spodeezer/spodeezer/spode>
+     WSGIScriptAlias / /home/username/spodeezer/spodeezer/spodeezer/spode>
      WSGIDaemonProcess app user=www-data group=www-data threads=2 python-home=/>
 
-     <Directory /home/juliettedebono/spodeezer>
+     <Directory /home/username/spodeezer>
             Options FollowSymLinks
             AllowOverride None
             Require all granted
@@ -168,4 +168,4 @@ sudo service apache2 restart
 
 ## Authors
 
-- Juliette Debono
+- Jul SQL
