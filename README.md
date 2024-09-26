@@ -4,7 +4,7 @@ This is the repo of my spodeezer api!
 
 It's a Flask project to manage Deezer and Spotify accounts.
 
-> API available at address: [spodeezer.h.minet.net](http://spodeezer.h.minet.net)
+> API available at address: [spodeezer.julsql.fr](http://spodeezer.julsql.fr)
 
 ## Table of Contents
 
@@ -15,14 +15,14 @@ It's a Flask project to manage Deezer and Spotify accounts.
 
 ## Commands
 
-- http://spodeezer.h.minet.net/deezer/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
+- http://spodeezer.julsql.fr/deezer/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
     Add to the Deezer playlist the song On Brûlera of Pomme. 
     Can be used with Shazam.
     Be careful you need to add in the header of the GET request the access-token (Access-Token) 
     and the user id (User-Id) of the playlist owner.
-- http://spodeezer.h.minet.net/spotify/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
+- http://spodeezer.julsql.fr/spotify/shazam?title=pomme&title=on%20brûlera&playlist=Shazam:
     Same but for Spotify (No need for the Access-Token, you just have to generate it one time)
-- http://spodeezer.h.minet.net/synchronisation/playlist?playlist=Coucou:
+- http://spodeezer.julsql.fr/synchronisation/playlist?playlist=Coucou:
     Synchronize a playlist between Deezer and Spotify and their tracks.
     Generate an Spotify access token first.
     Be careful you need to add in the header of the GET request:
@@ -30,10 +30,10 @@ It's a Flask project to manage Deezer and Spotify accounts.
   - the Deezer user id (Deezer-User-Id)
   - the Spotify user id (Spotify-User-Id)
 
-- http://spodeezer.h.minet.net/synchronisation: Still building,
+- http://spodeezer.julsql.fr/synchronisation: Still building,
     Same as command before, but for all the playlists of the accounts
-- http://spodeezer.h.minet.net/deezer/code: get the deezer token access
-- http://spodeezer.h.minet.net/spotify/code: get the spotify token access
+- http://spodeezer.julsql.fr/deezer/code: get the deezer token access
+- http://spodeezer.julsql.fr/spotify/code: get the spotify token access
 
 ## Installation
 
@@ -49,7 +49,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
    - User id: Connect to Deezer, go to your profil page and get the user id in the url `https://www.deezer.com/en/profile/<user_id>`
    - App token:
    Go to [Deezer Developers](https://developers.deezer.com/myapps) and create a new applicaiton 
-   (Application domain http://spodeezer.h.minet.net, Redirect URL after authentication http://spodeezer.h.minet.net/deezer/auth)
+   (Application domain http://spodeezer.julsql.fr, Redirect URL after authentication http://spodeezer.julsql.fr/deezer/auth)
    Get your Application ID and Secret Key.
    
    Create a `keys.py` file in [spodeezer/main](spodeezer/main) of this project and write:
@@ -58,7 +58,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
     deezer_client_id = 'application_id'
     deezer_client_secret = 'secret_key'
     deezer_user_id = 'your_user_id'
-    deezer_redirect_uri = 'http://spodeezer.h.minet.net/deezer/auth'
+    deezer_redirect_uri = 'http://spodeezer.julsql.fr/deezer/auth'
     deezer_permissions = "manage_library"
     ```
 
@@ -66,7 +66,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
    - User id: Connect to Spotify, go to update profil page https://www.spotify.com/fr/account/profile/ and get the user id in the first input
    - App token:
    Go to [Spotify for developers](https://developer.spotify.com/dashboard) and create a new applicaiton 
-   (Application domain http://spodeezer.h.minet.net, Redirect URL after authentication http://spodeezer.h.minet.net/spotify/auth)
+   (Application domain http://spodeezer.julsql.fr, Redirect URL after authentication http://spodeezer.julsql.fr/spotify/auth)
    Get your Client ID and Client secret.
    
    Add to the `keys.py` file:
@@ -75,7 +75,7 @@ It's a Flask project to manage Deezer and Spotify accounts.
     spotify_client_id = 'client_id'
     spotify_client_secret = 'client_secret'
     spotify_user_id = 'your_user_id'
-    spotify_redirect_uri = 'http://spodeezer.h.minet.net/spotify/auth'
+    spotify_redirect_uri = 'http://spodeezer.julsql.fr/spotify/auth'
     spotify_scope = "playlist-modify-public"
     ```
 
@@ -141,11 +141,11 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 
 ```
 <VirtualHost *:80>
-     ServerName spodeezer.h.minet.net
+     ServerName url.domain.com
      ServerAdmin admin@email.fr
 
-     WSGIScriptAlias / /home/username/spodeezer/spodeezer/spodeezer/spode>
-     WSGIDaemonProcess app user=www-data group=www-data threads=2 python-home=/>
+     WSGIScriptAlias / /home/username/spodeezer/spodeezer/spodeezer/spodeezer.wsgi application-group=%{GLOBAL}
+     WSGIDaemonProcess app user=www-data group=www-data threads=2 python-home=/home/username/spodeezer/env python-path=/home/username/spodeezer
 
      <Directory /home/username/spodeezer>
             Options FollowSymLinks
