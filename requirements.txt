@@ -15,7 +15,7 @@ packaging==24.1
 redis==5.0.8
 requests==2.32.3
 six==1.16.0
-spotipy==2.24.0
+spotipy==2.25.1
 sqlparse==0.5.1
 urllib3==2.2.3
 Werkzeug==3.0.4
